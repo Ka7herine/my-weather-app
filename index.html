@@ -12,6 +12,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" type="text/css" href="src/styles.css" />
+    <script type="javascript"></script>
   </head>
   <body>
     <div class="card">
@@ -35,17 +36,15 @@
                 Humidity: <span id="HumidityValue"></span>
               </div>
               <div id="WindSpeed">
-                Wind speed: <span id="windSpeedValue"></span>
+                Wind: <span id="windSpeedValue"></span> km/h
               </div>
             </div>
           </div>
           <div class="city-date">
-            <p id="yourcity">
-              City
-            </p>
+            <p id="yourcity"></p>
             <img
               id="my-weather-img"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Weather_icon_-_sunny.svg/1200px-Weather_icon_-_sunny.svg.png"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg=="
               height="50"
               width="50"
             />
@@ -55,48 +54,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <div class="weather-day">
-            Day
-            <br />
-            Emoji
-            <br />
-            min/max
-            <br />
-          </div>
-        </div>
-        <div class="col">
-          <div class="weather-day">
-            Day
-            <br />
-            Emoji
-            <br />
-            min/max
-            <br />
-          </div>
-        </div>
-        <div class="col">
-          <div class="weather-day">
-            Day
-            <br />
-            Emoji
-            <br />
-            min/max
-            <br />
-          </div>
-        </div>
-        <div class="col">
-          <div class="weather-day">
-            Day
-            <br />
-            Emoji
-            <br />
-            min/max
-            <br />
-          </div>
-        </div>
-      </div>
+      <div class="row" id="forecast"></div>
     </div>
     <script src="src/index.js"></script>
   </body>

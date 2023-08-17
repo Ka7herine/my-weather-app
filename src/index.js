@@ -11,26 +11,28 @@ let days = [
 let day = days[now.getDay()];
 let hours = now.getHours();
 let minutes = now.getMinutes();
+let apiKey = "99b8f9330a1bfba3a85e523fd3c2e528";
 if (minutes < 10) {
   minutes = `0${minutes}`;
 }
-let userCity = "";
-
 let currentDate = document.querySelector(".date");
 currentDate.innerHTML = `${day}, ${hours}:${minutes}`;
-let inputCity = document.querySelector("#user-city");
-let pCity = document.querySelector("#yourcity");
-function displayCity(event) {
+
+getCityWeather("New York");
+
+function displayCityBtnAction(event) {
   event.preventDefault();
-  pCity.innerHTML = inputCity.value;
-  userCity = inputCity.value;
-  let apiKey = "99b8f9330a1bfba3a85e523fd3c2e528";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${userCity}&units=metric`;
+  let inputCity = document.querySelector("#user-city");
+  getCityWeather(inputCity.value);
+}
+
+function getCityWeather(cityName) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric`;
   axios.get(`${apiUrl}&appid=${apiKey}`).then(showUserCityWeather);
 }
 
 let cityForm = document.querySelector("#city-form");
-cityForm.addEventListener("submit", displayCity);
+cityForm.addEventListener("submit", displayCityBtnAction);
 
 function showUserCityWeather(response) {
   showUserCityTemp(response);
@@ -38,6 +40,8 @@ function showUserCityWeather(response) {
   showUserCityHumidity(response);
   showUserCityDesc(response);
   showUserCityIcon(response);
+  document.querySelector("#yourcity").innerHTML = response.data.name;
+  showForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
 function showUserCityTemp(response) {
@@ -73,4 +77,42 @@ function showUserCityIcon(response) {
     "src",
     `http://openweathermap.org/img/wn/${icon}@2x.png`
   );
+}
+
+function showForecast(lat, lon) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(showForecastCols);
+}
+
+function showForecastCols(res) {
+  console.log(res);
+  let days = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+  let forecastingDays = res.data.daily;
+  let forecastHTML = "";
+  forecastingDays.forEach(function (dayForecast, index) {
+    if (index < 5) {
+      let dayDate = new Date(dayForecast.dt * 1000);
+      let dayName = days[dayDate.getDay()];
+      let weatherIcon = dayForecast.weather[0].icon;
+      let minTemp = Math.round(dayForecast.temp.min);
+      let maxTemp = Math.round(dayForecast.temp.max);
+      forecastHTML += `<div class="col">
+          <div class="weather-day">
+            ${dayName}
+            <br />
+            <img
+              src="https://openweathermap.org/img/wn/${weatherIcon}.png"
+              width="42"
+            />
+            <br />
+            ${minTemp}°/${maxTemp}°
+            <br />
+          </div>
+        </div>`;
+
+      let forecastRow = document.querySelector("#forecast");
+      forecastRow.innerHTML = forecastHTML;
+    }
+  });
 }
