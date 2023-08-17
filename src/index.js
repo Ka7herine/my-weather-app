@@ -36,6 +36,8 @@ function showUserCityWeather(response) {
   showUserCityTemp(response);
   showUserCityWind(response);
   showUserCityHumidity(response);
+  showUserCityDesc(response);
+  showUserCityIcon(response);
 }
 
 function showUserCityTemp(response) {
@@ -56,4 +58,19 @@ function showUserCityHumidity(response) {
   let humidity = Math.round(response.data.main.humidity);
   let humidityElem = document.querySelector("#HumidityValue");
   humidityElem.innerHTML = `${humidity}%`;
+}
+function showUserCityDesc(response) {
+  console.log(response.data);
+  let description = response.data.weather[0].description;
+  let descriptionElem = document.querySelector("#description");
+  descriptionElem.innerHTML = `${description}`;
+}
+function showUserCityIcon(response) {
+  console.log(response.data);
+  let icon = response.data.weather[0].icon;
+  let iconElem = document.querySelector("#my-weather-img");
+  iconElem.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${icon}@2x.png`
+  );
 }
